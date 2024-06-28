@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/auth", authRoute);
-app.use("api/blog", blogRoute);
+app.use("/api/blog", blogRoute);
 app.use("/api/comments", commentRoute);
 
 const PORT = process.env.PORT || 8000;
