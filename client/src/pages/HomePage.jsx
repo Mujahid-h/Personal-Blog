@@ -1,29 +1,34 @@
-import React, { useState, useEffect } from "react";
-import { getPosts } from "../services/api";
+import React, { useEffect, useState } from "react";
+import { getPosts } from "../api/blogApi";
 import BlogCard from "../components/BlogCard";
 
 const HomePage = () => {
-  const [posts, setPosts] = useState([]);
+  const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const data = await getPosts();
-        setPosts(data);
+        setBlogs(data);
       } catch (error) {
-        console.error("Error fetching posts:", error);
+        console.error("Failed to fetch posts", error);
       }
     };
-
     fetchPosts();
   }, []);
 
+  const handleDelete = (id) => {
+    setBlogs(blogs.filter((blog) => blog._id !== id));
+  };
+
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">All Posts</h1>
-      {posts.map((post) => (
-        <BlogCard key={post._id} blog={post} />
-      ))}
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">All Blogs</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {blogs.map((blog) => (
+          <BlogCard key={blog._id} blog={blog} onDelete={handleDelete} />
+        ))}
+      </div>
     </div>
   );
 };

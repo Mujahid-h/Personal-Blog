@@ -1,26 +1,41 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { createPost } from "../api/blogApi";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { getPostById, updatePost } from "../api/blogApi";
 
-const CreateBlogPage = () => {
+const UpdateBlogPage = () => {
+  const { id } = useParams();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const blog = await getPostById(id);
+        setTitle(blog.title);
+        setContent(blog.content);
+        setAuthor(blog.author);
+      } catch (error) {
+        console.error("Failed to fetch post", error);
+      }
+    };
+    fetchPost();
+  }, [id]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await createPost({ title, content, author });
-      navigate("/");
+      await updatePost(id, { title, content, author });
+      navigate(`/blogs/${id}`);
     } catch (error) {
-      console.error("Failed to create post", error);
+      console.error("Failed to update post", error);
     }
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Create New Blog</h1>
+      <h1 className="text-3xl font-bold mb-8">Update Blog</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -69,4 +84,4 @@ const CreateBlogPage = () => {
   );
 };
 
-export default CreateBlogPage;
+export default UpdateBlogPage;

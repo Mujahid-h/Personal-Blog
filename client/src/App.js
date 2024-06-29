@@ -1,24 +1,26 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
-import CreateBlogPage from "./pages/CreateBlogPage";
-import EditBlogPage from "./pages/EditBlogPage";
 import BlogDetailPage from "./pages/BlogDetailPage";
+import CreateBlogPage from "./pages/CreateBlogPage";
+import UpdateBlogPage from "./pages/UpdateBlogPage";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
 
 const App = () => {
   return (
-    <Router>
-      <div className="min-h-screen bg-gray-100">
-        <Navbar />
-        <Routes>
-          <Route exact path="/" element={<HomePage />} />
-          <Route path="/blog/:id" element={<BlogDetailPage />} />
-          <Route path="/create" element={<CreateBlogPage />} />
-          <Route path="/edit/:id" element={<EditBlogPage />} />
-        </Routes>
-      </div>
-    </Router>
+    <div className="App">
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/blogs/:id" element={<BlogDetailPage />} />
+        <Route path="/create" element={<CreateBlogPage />} />
+        <Route path="/update/:id" element={<UpdateBlogPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+      </Routes>
+    </div>
   );
 };
 
